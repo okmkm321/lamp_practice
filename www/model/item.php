@@ -118,7 +118,7 @@ function update_item_stock($db, $item_id, $stock){
     LIMIT 1
   ";
   $params[0] = $stock;
-  $params[0] = $item_id;
+  $params[1] = $item_id;
   return execute_query($db, $sql, $params);
 }
 
