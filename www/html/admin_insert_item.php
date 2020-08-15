@@ -21,11 +21,12 @@ if(is_admin($user) === false){
 $name = get_post('name');
 $price = get_post('price');
 $status = get_post('status');
+$token = get_post('csrf_token');
 $stock = get_post('stock');
 
 $image = get_file('image');
 
-if(regist_item($db, $name, $price, $stock, $status, $image)){
+if(is_valid_csrf_token($token) !== false && regist_item($db, $name, $price, $stock, $status, $image)){
   set_message('商品を登録しました。');
 }else {
   set_error('商品の登録に失敗しました。');
