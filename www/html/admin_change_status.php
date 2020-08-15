@@ -20,11 +20,12 @@ if(is_admin($user) === false){
 
 $item_id = get_post('item_id');
 $changes_to = get_post('changes_to');
+$token = get_post('csrf_token');
 
-if($changes_to === 'open'){
+if(is_valid_csrf_token($token) !== false && $changes_to === 'open'){
   update_item_status($db, $item_id, ITEM_STATUS_OPEN);
   set_message('ステータスを変更しました。');
-}else if($changes_to === 'close'){
+}else if(is_valid_csrf_token($token) !== false && $changes_to === 'close'){
   update_item_status($db, $item_id, ITEM_STATUS_CLOSE);
   set_message('ステータスを変更しました。');
 }else {

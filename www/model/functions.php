@@ -149,5 +149,5 @@ function is_valid_csrf_token($token) {
   if ($token === '') {
     return false;
   }
-  return $valid_token = get_session('csrf_token');
+  return $token === get_session('csrf_token');
 }
