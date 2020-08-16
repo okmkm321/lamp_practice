@@ -24,12 +24,11 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `history_detail`
+-- テーブルの構造 `histories_detail`
 --
 
-CREATE TABLE `history_detail` (
+CREATE TABLE `histories_detail` (
   `order_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
   `price` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
@@ -41,9 +40,9 @@ CREATE TABLE `history_detail` (
 --
 
 --
--- テーブルのインデックス `history_detail`
+-- テーブルのインデックス `histories_detail`
 --
-ALTER TABLE `history_detail`
+ALTER TABLE `histories_detail`
   ADD PRIMARY KEY (`order_id`);
 
 --
@@ -51,9 +50,9 @@ ALTER TABLE `history_detail`
 --
 
 --
--- テーブルのAUTO_INCREMENT `history_detail`
+-- テーブルのAUTO_INCREMENT `histories_detail`
 --
-ALTER TABLE `history_detail`
+ALTER TABLE `histories_detail`
   MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
@@ -65,13 +64,12 @@ COMMIT;
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `history`
+-- テーブルの構造 `histories`
 --
 
-CREATE TABLE `history` (
+CREATE TABLE `histories` (
   `order_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `sum_price` int(11) NOT NULL,
   `purchase_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -80,9 +78,9 @@ CREATE TABLE `history` (
 --
 
 --
--- テーブルのインデックス `history`
+-- テーブルのインデックス `histories`
 --
-ALTER TABLE `history`
+ALTER TABLE `histories`
   ADD PRIMARY KEY (`order_id`);
 
 --
@@ -90,9 +88,9 @@ ALTER TABLE `history`
 --
 
 --
--- テーブルのAUTO_INCREMENT `history`
+-- テーブルのAUTO_INCREMENT `histories`
 --
-ALTER TABLE `history`
+ALTER TABLE `histories`
   MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
