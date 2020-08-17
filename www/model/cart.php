@@ -111,17 +111,44 @@ function purchase_carts($db, $carts){
   if(validate_cart_purchase($carts) === false){
     return false;
   }
-  foreach($carts as $cart){
-    if(update_item_stock(
-        $db, 
-        $cart['item_id'], 
-        $cart['stock'] - $cart['amount']
-      ) === false){
-      set_error($cart['name'] . 'の購入に失敗しました。');
+  $db -> begintransaction();
+    foreach($carts as $cart){
+      if(update_item_stock(
+          $db, 
+          $cart['item_id'], 
+          $cart['stock'] - $cart['amount']
+        ) === false){
+        set_error($cart['name'] . 'の購入に失敗しました。');
+      }
+
+      if(delete_user_carts(
+          $db, 
+          $cart['user_id']
+        ) === false) {
+          set_error($cart['name'] . 'の購入に失敗しました。');
+        }
+          
+      if(purchase_histories(
+          $db, 
+          $cart['user_id']
+          ) === false) {
+            set_error($cart['name'] . 'の購入に失敗しました。');
+      }
+        
+      if(purchase_histories_detail(
+          $db, 
+          $cart['item_id'], 
+          $cart['price'], 
+          $cart['amount']
+          ) === false) {
+        set_error($cart['name'] . 'の購入に失敗しました。');
+      }
     }
-  }
-  
-  delete_user_carts($db, $carts[0]['user_id']);
+    if(has_error() === false) {
+      $db -> commit();
+    } else {
+      $db -> rollback();
+    }
 }
 
 function delete_user_carts($db, $user_id){
@@ -135,6 +162,35 @@ function delete_user_carts($db, $user_id){
   execute_query($db, $sql, $params);
 }
 
+function purchase_histories($db, $user_id) {
+  $sql = "
+    INSERT INTO 
+      histories(
+        user_id,
+        purchase_date
+      )
+    VALUES(?, now())
+  ";
+  $params[0] = $user_id;
+  execute_query($db, $sql, $params);
+}
+
+function purchase_histories_detail($db, $item_id, $price, $amount) {
+  $sql = "
+    INSERT INTO
+      histories_detail(
+        item_id,
+        price,
+        quantity,
+        purchase_date
+      )
+    VALUES(?, ?, ?, now())
+  ";
+  $params[0] = $item_id;
+  $params[1] = $price;
+  $params[2] = $amount;
+  execute_query($db, $sql, $params);
+}
 
 function sum_carts($carts){
   $total_price = 0;
