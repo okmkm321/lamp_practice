@@ -41,9 +41,6 @@ CREATE TABLE `histories_detail` (
 
 --
 -- テーブルのインデックス `histories_detail`
---
-ALTER TABLE `histories_detail`
-  ADD PRIMARY KEY (`order_id`);
 
 --
 -- ダンプしたテーブルのAUTO_INCREMENT
@@ -52,9 +49,7 @@ ALTER TABLE `histories_detail`
 --
 -- テーブルのAUTO_INCREMENT `histories_detail`
 --
-ALTER TABLE `histories_detail`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

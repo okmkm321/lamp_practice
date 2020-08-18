@@ -57,9 +57,6 @@
       <form method="post" action="finish.php">
         <input class="btn btn-block btn-primary" type="submit" value="購入する">
         <?php foreach($carts as $cart){ ?>
-          <input type="hidden" name="item_id" value="<?php print($cart['item_id']); ?>">
-          <input type="hidden" name="amount" value="<?php print($cart['amount']); ?>">
-          <input type="hidden" name="price" value="<?php print($cart['price']); ?>">
           <input type="hidden" name="csrf_token" value="<?php print($token); ?>">
         <?php } ?>
         </form>

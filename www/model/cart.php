@@ -53,7 +53,6 @@ function get_user_cart($db, $user_id, $item_id){
   $params[0] = $user_id;
   $params[1] = $item_id;
   return fetch_query($db, $sql, $params);
-
 }
 
 function add_cart($db, $user_id, $item_id ) {
@@ -108,35 +107,39 @@ function delete_cart($db, $cart_id){
 }
 
 function purchase_carts($db, $carts){
+  global $order_id;
   if(validate_cart_purchase($carts) === false){
     return false;
   }
   $db -> begintransaction();
-    foreach($carts as $cart){
-      if(update_item_stock(
-          $db, 
-          $cart['item_id'], 
-          $cart['stock'] - $cart['amount']
-        ) === false){
+  
+  if(purchase_histories(
+    $db, 
+    $carts[0]['user_id']
+    ) === false) {
+      set_error($cart['name'] . 'の購入に失敗しました。');
+  }
+
+  foreach($carts as $cart){
+    if(update_item_stock(
+      $db, 
+      $cart['item_id'], 
+      $cart['stock'] - $cart['amount']
+      ) === false){
         set_error($cart['name'] . 'の購入に失敗しました。');
       }
-
+      
       if(delete_user_carts(
-          $db, 
-          $cart['user_id']
+        $db, 
+        $cart['user_id']
         ) === false) {
           set_error($cart['name'] . 'の購入に失敗しました。');
         }
-          
-      if(purchase_histories(
-          $db, 
-          $cart['user_id']
-          ) === false) {
-            set_error($cart['name'] . 'の購入に失敗しました。');
-      }
         
+
       if(purchase_histories_detail(
           $db, 
+          $order_id,
           $cart['item_id'], 
           $cart['price'], 
           $cart['amount']
@@ -163,6 +166,7 @@ function delete_user_carts($db, $user_id){
 }
 
 function purchase_histories($db, $user_id) {
+  global $order_id;
   $sql = "
     INSERT INTO 
       histories(
@@ -172,23 +176,26 @@ function purchase_histories($db, $user_id) {
     VALUES(?, now())
   ";
   $params[0] = $user_id;
-  execute_query($db, $sql, $params);
+  $order_id = fetch_execute_query($db, $sql, $params);
+  var_dump($order_id);
 }
 
-function purchase_histories_detail($db, $item_id, $price, $amount) {
+function purchase_histories_detail($db, $order_id, $item_id, $price, $amount) {
   $sql = "
     INSERT INTO
       histories_detail(
+        order_id,
         item_id,
         price,
         quantity,
         purchase_date
       )
-    VALUES(?, ?, ?, now())
+    VALUES(?, ?, ?, ?, now())
   ";
-  $params[0] = $item_id;
-  $params[1] = $price;
-  $params[2] = $amount;
+  $params[0] = $order_id;
+  $params[1] = $item_id;
+  $params[2] = $price;
+  $params[3] = $amount;
   execute_query($db, $sql, $params);
 }
 
