@@ -56,8 +56,10 @@
       <p class="text-right">合計金額: <?php print number_format($total_price); ?>円</p>
       <form method="post" action="finish.php">
         <input class="btn btn-block btn-primary" type="submit" value="購入する">
-        <input type="hidden" name="csrf_token" value="<?php print($token); ?>">
-      </form>
+        <?php foreach($carts as $cart){ ?>
+          <input type="hidden" name="csrf_token" value="<?php print($token); ?>">
+        <?php } ?>
+        </form>
     <?php } else { ?>
       <p>カートに商品はありません。</p>
     <?php } ?> 
