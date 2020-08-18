@@ -177,7 +177,6 @@ function purchase_histories($db, $user_id) {
   ";
   $params[0] = $user_id;
   $order_id = fetch_execute_query($db, $sql, $params);
-  var_dump($order_id);
 }
 
 function purchase_histories_detail($db, $order_id, $item_id, $price, $amount) {
