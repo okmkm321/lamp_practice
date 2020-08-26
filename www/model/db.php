@@ -58,3 +58,14 @@ function fetch_execute_query($db, $sql, $params = array()){
   }
   return false;
 }
+
+function fetch_column_count($db, $sql) {
+  try{
+    $statement = $db -> prepare($sql);
+    $statement -> execute();
+    return $statement -> fetchColumn();
+  } catch (PDOException $e) {
+      set_error('データ取得に失敗しました。');
+  }
+  return false;
+}

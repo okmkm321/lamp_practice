@@ -42,6 +42,16 @@
       <?php } ?>
       </div>
     </div>
+    <div class="pagenation">
+      <div>
+        <p><?php echo $number_of_items; ?>件中</p>
+      </div>
+      <div>
+        <?php for ($i = 1; $i <= $number_of_pages; $i++) { ?>
+          <a href = "?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+        <?php } ?>
+      </div>
+    </div>
   </div>
   
 </body>

@@ -44,8 +44,5 @@
       <p>カートに商品はありません。</p>
     <?php } ?> 
   </div>
-  <script>
-    $('.delete').on('click', () => confirm('本当に削除しますか？'))
-  </script>
 </body>
 </html>

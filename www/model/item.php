@@ -22,7 +22,8 @@ function get_item($db, $item_id){
   return fetch_query($db, $sql, $params);
 }
 
-function get_items($db, $is_open = false){
+function get_items($db, $is_open = false, $page = 1){
+  $params = array();
   $sql = '
     SELECT
       item_id, 
@@ -37,18 +38,50 @@ function get_items($db, $is_open = false){
   if($is_open === true){
     $sql .= '
       WHERE status = 1
+      LIMIT
+      ?, 8
     ';
+    $params[0] = (($page - 1) * 8);
   }
 
-  return fetch_all_query($db, $sql);
+
+  return fetch_all_query($db, $sql, $params);
+}
+
+function get_number_of_pages($db) {
+  $sql = "
+    SELECT
+      COUNT(*)
+    FROM
+      items
+    WHERE 
+      status = 1
+  ";
+  $number_of_items = fetch_column_count($db, $sql);
+
+  $max_page = ceil($number_of_items / 8);
+  return $max_page;
+}
+
+function get_all_item($db) {
+  $sql = "
+    SELECT
+      COUNT(*)
+    FROM
+      items
+    WHERE 
+      status = 1
+  ";
+  $number_of_items = fetch_column_count($db, $sql);
+  return $number_of_items;
 }
 
 function get_all_items($db){
   return get_items($db);
 }
 
-function get_open_items($db){
-  return get_items($db, true);
+function get_open_items($db, $page){
+  return get_items($db, true, $page);
 }
 
 function regist_item($db, $name, $price, $stock, $status, $image){
