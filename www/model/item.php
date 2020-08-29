@@ -48,18 +48,8 @@ function get_items($db, $is_open = false, $page = 1){
   return fetch_all_query($db, $sql, $params);
 }
 
-function get_number_of_pages($db) {
-  $sql = "
-    SELECT
-      COUNT(*)
-    FROM
-      items
-    WHERE 
-      status = 1
-  ";
-  $number_of_items = fetch_column_count($db, $sql);
-
-  $max_page = ceil($number_of_items / 8);
+function get_number_of_pages($items) {
+  $max_page = ceil($items / 8);
   return $max_page;
 }
 
