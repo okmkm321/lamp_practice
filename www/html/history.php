@@ -18,10 +18,12 @@ if(is_logined() === false){
 $db = get_db_connect();
 $user = get_login_user($db);
 
-$histories = get_history_order($db, $user['user_id']);
+//$histories = get_history_order($db, $user['user_id']);
 
 if(is_admin($user)){ 
     $histories = get_all_history($db);
+} else {
+    $histories = get_history_order($db, $user['user_id']);
 }
 
 

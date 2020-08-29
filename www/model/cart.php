@@ -107,19 +107,15 @@ function delete_cart($db, $cart_id){
 }
 
 function purchase_carts($db, $carts){
-  global $order_id;
   if(validate_cart_purchase($carts) === false){
     return false;
   }
   $db -> begintransaction();
   
-  if(purchase_histories(
-    $db, 
-    $carts[0]['user_id']
-    ) === false) {
+  if(($order_id = purchase_histories($db, $carts[0]['user_id'])) === false) {
       set_error($cart['name'] . 'の購入に失敗しました。');
   }
-
+  
   foreach($carts as $cart){
     if(update_item_stock(
       $db, 
@@ -136,7 +132,6 @@ function purchase_carts($db, $carts){
           set_error($cart['name'] . 'の購入に失敗しました。');
         }
         
-
       if(purchase_histories_detail(
           $db, 
           $order_id,
@@ -166,7 +161,6 @@ function delete_user_carts($db, $user_id){
 }
 
 function purchase_histories($db, $user_id) {
-  global $order_id;
   $sql = "
     INSERT INTO 
       histories(
@@ -177,6 +171,7 @@ function purchase_histories($db, $user_id) {
   ";
   $params[0] = $user_id;
   $order_id = fetch_execute_query($db, $sql, $params);
+  return $order_id;
 }
 
 function purchase_histories_detail($db, $order_id, $item_id, $price, $amount) {

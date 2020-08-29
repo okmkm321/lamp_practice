@@ -42,7 +42,20 @@
       <?php } ?>
       </div>
     </div>
+    <div class="pagenation">
+      <div>
+        <p><?php echo $number_of_items; ?>件中<?php echo $xx; ?>-<?php echo $yy; ?>件目の商品</p>
+      </div>
+      <div>
+        <?php for ($i = 1; $i <= $number_of_pages; $i++) { ?>
+          <?php if ((int)$page === $i) { ?>
+            <span><?php echo $i; ?></span>
+          <?php } else { ?>
+            <a href = "?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+          <?php } ?> 
+        <?php } ?>
+      </div>
+    </div>
   </div>
-  
 </body>
 </html>
