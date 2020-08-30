@@ -23,12 +23,11 @@ if($page === '') {
   $page = 1;
 }
 
-
 $user = get_login_user($db);
 
 $items = get_open_items($db, $page);
 
-$xx = ($page-1) * 8 + 1;
+$xx = ($page-1) * NUMBER_OF_DISPLAYS + 1;
 $yy = ($xx + count($items)) - 1;
 
 include_once VIEW_PATH . 'index_view.php';
