@@ -41,7 +41,7 @@ function get_items($db, $is_open = false, $page = 1){
       LIMIT
       ?, 8
     ';
-    $params[0] = (($page - 1) * 8);
+    $params[0] = (($page - 1) * NUMBER_OF_DISPLAYS);
   }
 
 
@@ -49,7 +49,7 @@ function get_items($db, $is_open = false, $page = 1){
 }
 
 function get_number_of_pages($items) {
-  $max_page = ceil($items / 8);
+  $max_page = ceil($items / NUMBER_OF_DISPLAYS);
   return $max_page;
 }
 
